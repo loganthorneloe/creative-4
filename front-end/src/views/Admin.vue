@@ -80,17 +80,6 @@ export default {
     },
     async selectItem(item) {
       try {
-        // const formData = new FormData();
-        // console.log("form created");
-        // need to grab the right image here, grabs from where we are working to send it to the server
-        // console.log(item.image);
-        // let file = fileUrl('../../data/pokemon_images/'+ item.image);
-        // this.file = file;
-        // console.log("file created");
-        // this form should be able to get what it needs here
-        // formData.append('photo', file, item.image);
-        // console.log("sending photos: ../../../data/pokemon_images/" + item.image);
-        // let r1 = await axios.post('/api/photos', formData);
         let r2 = await axios.post('/api/items', {
           id:	item.id,
           name: item.name,
@@ -121,6 +110,16 @@ export default {
       }
     },
     async deleteItem(item) {
+      try {
+        await axios.delete("/api/items/" + item._id);
+        this.findItem = null;
+        this.getItems();
+        return true;
+      } catch (error) {
+        return;
+      }
+    },
+    async clearAll(item) {
       try {
         await axios.delete("/api/items/" + item._id);
         this.findItem = null;

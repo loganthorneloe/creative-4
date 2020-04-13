@@ -2,8 +2,8 @@
 <div class="home">
   <section class="image-gallery">
     <div class="image" v-for="item in items" :key="item.id">
-      <h2>{{item.title}}</h2>
-      <img :src="item.path" />
+      <h2>{{item.name}}</h2>
+      <img :src="'/images/pokemon_images/' + item.path" />
       <div>{{item.desc}}</div>
     </div>
   </section>
