@@ -1,47 +1,21 @@
 <template>
 <div class="admin">
-  <h1>The Admin Page!</h1>
-    <div class="heading">
-      <div class="circle">1</div>
-      <h2>Add an Item</h2>
-    </div>
-    <div class="add">
-      <div class="form">
-        <input v-model="title" placeholder="Title">
-        <p></p>
-        <textarea v-model="firstTextArea" placeholder="add description"></textarea>
-        <p></p>
-        <input type="file" name="photo" @change="fileChanged">
-      </div>
-      <div class="upload" v-if="addItem">
-        <h2>{{addItem.title}}</h2>
-        <img :src="'/images/pokemon_images/' + addItem.path" />
-      </div>
-    </div>
-    <div class="heading">
-      <div class="circle">2</div>
-      <h2>Edit/Delete an Item</h2>
-    </div>
-    <div class="edit">
-      <div class="form">
-        <input v-model="findTitle" placeholder="Search">
-        <div class="suggestions" v-if="suggestions.length > 0">
-          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.name}}
-          </div>
+  <h1>Team Builder</h1>
+    <div class="form">
+      <input v-model="findTitle" placeholder="Search">
+      <div class="suggestions" v-if="suggestions.length > 0">
+        <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.name}}
         </div>
       </div>
-      <div class="upload" v-if="findItem">
-        <input v-model="findItem.title">
-        <p></p>
-        <textarea v-model="findItem.desc" placeholder="add description"></textarea>
-        <p></p>
-        <img src="charmander.png" />
-      </div>
-      <div class="actions" v-if="findItem">
-        <button @click="deleteItem(findItem)">Delete</button>
-        <button @click="editItem(findItem)">Edit</button>
-      </div>
     </div>
+    <section class="image-gallery">
+      <div class="image" v-for="item in databaseItems" :key="item._id">
+        <h2>{{item.name}}</h2>
+        <img :src="'/images/pokemon_images/' + item.path" />
+        <div>{{item.desc}}</div>
+        <button @click="deleteItem(item)">Delete</button>
+      </div>
+    </section>
 </div>
 </template>
 
@@ -60,6 +34,7 @@ export default {
       file: null,
       addItem: null,
       items: [],
+      databaseItems: [],
       findTitle: "",
       findItem: null,
       firstTextArea: "",
@@ -73,6 +48,7 @@ export default {
   },
   created() {
     this.items = pokemons;
+    this.getItems();
   },
   methods: {
     fileChanged(event) {
@@ -103,7 +79,7 @@ export default {
     async getItems() {
       try {
         let response = await axios.get("/api/items");
-        this.items = response.data;
+        this.databaseItems = response.data;
         return true;
       } catch (error) {
         return;
@@ -112,29 +88,6 @@ export default {
     async deleteItem(item) {
       try {
         await axios.delete("/api/items/" + item._id);
-        this.findItem = null;
-        this.getItems();
-        return true;
-      } catch (error) {
-        return;
-      }
-    },
-    async clearAll(item) {
-      try {
-        await axios.delete("/api/items/" + item._id);
-        this.findItem = null;
-        this.getItems();
-        return true;
-      } catch (error) {
-        return;
-      }
-    },
-    async editItem(item) {
-      try {
-        await axios.put("/api/items/" + item._id, {
-          title: this.findItem.title,
-          desc: this.findItem.desc,
-        });
         this.findItem = null;
         this.getItems();
         return true;
