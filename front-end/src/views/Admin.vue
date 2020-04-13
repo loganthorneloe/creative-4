@@ -13,7 +13,7 @@
         <h2>{{item.name}}</h2>
         <img :src="'/images/pokemon_images/' + item.path" />
         <div>{{item.desc}}</div>
-        <button @click="deleteItem(item)">Delete</button>
+        <button @click="deleteItem(item)">Remove</button>
       </div>
     </section>
 </div>
@@ -23,8 +23,6 @@
 
 import axios from 'axios';
 import pokemons from '../pokemons.js'
-
-// var fileUrl = require('file-url');
 
 export default {
   name: 'Admin',
@@ -38,6 +36,7 @@ export default {
       findTitle: "",
       findItem: null,
       firstTextArea: "",
+      databaseSize: 0,
     }
   },
   computed: {
@@ -55,6 +54,9 @@ export default {
       this.file = event.target.files[0]
     },
     async selectItem(item) {
+      if(this.databaseSize >= 6){
+        return;
+      }
       try {
         let r2 = await axios.post('/api/items', {
           id:	item.id,
@@ -71,6 +73,7 @@ export default {
           path: item.image,
         });
         this.addItem = r2.data;
+        this.getItems();
       } catch (error) {
         console.log("error!");
         return;
@@ -80,6 +83,7 @@ export default {
       try {
         let response = await axios.get("/api/items");
         this.databaseItems = response.data;
+        this.databaseSize = this.databaseItems.length;
         return true;
       } catch (error) {
         return;
