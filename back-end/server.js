@@ -48,9 +48,18 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
 // Create a new item in the museum: takes a title and a path to an image.
 app.post('/api/items', async (req, res) => {
   const item = new Item({
-    title: req.body.title,
-    path: req.body.path,
-    desc: req.body.desc,
+    id:	req.body.id,
+    name: req.body.name,
+    type1: req.body.type1,
+    type2: req.body.type2,
+    total: req.body.total, 
+    hp:	req.body.hp,
+    attack:	req.body.attack,
+    defense:	req.body.defense,
+    spatk:	req.body.spatk,
+    spdef:	req.body.spdef,
+    sp:	req.body.sp,
+    path: req.body.path, //this will connect to the image
   });
   try {
     await item.save();
