@@ -7,16 +7,17 @@
       </div>
     </router-link>
     <div class="title">
-      <h1>Museum of Ordinary Objects</h1>
+      <h1>Gen 1 Pokemon Team Builder</h1>
     </div>
   </div>
   <div class="content">
     <router-view />
   </div>
   <div class="footer">
-    <router-link to="/admin">Admin</router-link>
+    <router-link to="/admin">Team-Builder</router-link>
     <p></p>
     <a href="https://github.com/lathorne/creative-4">https://github.com/lathorne/creative-4</a>
+    <div> Logan Thorneloe & Clint Frandsen</div>
   </div>
 </div>
 </template>

@@ -12,11 +12,10 @@
         <textarea v-model="firstTextArea" placeholder="add description"></textarea>
         <p></p>
         <input type="file" name="photo" @change="fileChanged">
-        <button @click="upload">Upload</button>
       </div>
       <div class="upload" v-if="addItem">
         <h2>{{addItem.title}}</h2>
-        <img :src="addItem.path" />
+        <img :src="'/images/pokemon_images/' + addItem.path" />
       </div>
     </div>
     <div class="heading">
@@ -27,7 +26,7 @@
       <div class="form">
         <input v-model="findTitle" placeholder="Search">
         <div class="suggestions" v-if="suggestions.length > 0">
-          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.title}}
+          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.name}}
           </div>
         </div>
       </div>
@@ -36,7 +35,7 @@
         <p></p>
         <textarea v-model="findItem.desc" placeholder="add description"></textarea>
         <p></p>
-        <img :src="findItem.path" />
+        <img src="charmander.png" />
       </div>
       <div class="actions" v-if="findItem">
         <button @click="deleteItem(findItem)">Delete</button>
@@ -45,6 +44,110 @@
     </div>
 </div>
 </template>
+
+<script>
+
+import axios from 'axios';
+import pokemons from '../pokemons.js'
+
+// var fileUrl = require('file-url');
+
+export default {
+  name: 'Admin',
+  data() {
+    return {
+      title: "",
+      file: null,
+      addItem: null,
+      items: [],
+      findTitle: "",
+      findItem: null,
+      firstTextArea: "",
+    }
+  },
+  computed: {
+    suggestions() {
+      let items = this.items.filter(item => item.name.toLowerCase().includes(this.findTitle.toLowerCase()));
+      return items.sort((a, b) => a.name > b.name);
+    }
+  },
+  created() {
+    this.items = pokemons;
+  },
+  methods: {
+    fileChanged(event) {
+      this.file = event.target.files[0]
+    },
+    async selectItem(item) {
+      try {
+        // const formData = new FormData();
+        // console.log("form created");
+        // need to grab the right image here, grabs from where we are working to send it to the server
+        // console.log(item.image);
+        // let file = fileUrl('../../data/pokemon_images/'+ item.image);
+        // this.file = file;
+        // console.log("file created");
+        // this form should be able to get what it needs here
+        // formData.append('photo', file, item.image);
+        // console.log("sending photos: ../../../data/pokemon_images/" + item.image);
+        // let r1 = await axios.post('/api/photos', formData);
+        let r2 = await axios.post('/api/items', {
+          id:	item.id,
+          name: item.name,
+          type1: item.type1,
+          type2: item.type2,
+          total: item.total, 
+          hp:	item.hp,
+          attack:	item.attack,
+          defense:	item.defense,
+          spatk:	item.spatk,
+          spdef:	item.spdef,
+          sp:	item.sp,
+          path: item.image,
+        });
+        this.addItem = r2.data;
+      } catch (error) {
+        console.log("error!");
+        return;
+      }
+    },
+    async getItems() {
+      try {
+        let response = await axios.get("/api/items");
+        this.items = response.data;
+        return true;
+      } catch (error) {
+        return;
+      }
+    },
+    async deleteItem(item) {
+      try {
+        await axios.delete("/api/items/" + item._id);
+        this.findItem = null;
+        this.getItems();
+        return true;
+      } catch (error) {
+        return;
+      }
+    },
+    async editItem(item) {
+      try {
+        await axios.put("/api/items/" + item._id, {
+          title: this.findItem.title,
+          desc: this.findItem.desc,
+        });
+        this.findItem = null;
+        this.getItems();
+        return true;
+      } catch (error) {
+        return;
+      }
+    },
+ },
+}
+
+</script>
+
 
 <style scoped>
 .image h2 {
@@ -116,89 +219,3 @@ button {
 }
 
 </style>
-
-<script>
-
-import axios from 'axios';
-
-export default {
-  name: 'Admin',
-  data() {
-    return {
-      title: "",
-      file: null,
-      addItem: null,
-      items: [],
-      findTitle: "",
-      findItem: null,
-      firstTextArea: "",
-    }
-  },
-  computed: {
-    suggestions() {
-      let items = this.items.filter(item => item.title.toLowerCase().startsWith(this.findTitle.toLowerCase()));
-      return items.sort((a, b) => a.title > b.title);
-    }
-  },
-  created() {
-    this.getItems();
-  },
-  methods: {
-    fileChanged(event) {
-      this.file = event.target.files[0]
-    },
-    async upload() {
-      try {
-        const formData = new FormData();
-        formData.append('photo', this.file, this.file.name)
-        let r1 = await axios.post('/api/photos', formData);
-        let r2 = await axios.post('/api/items', {
-          title: this.title,
-          path: r1.data.path,
-          desc: this.firstTextArea,
-        });
-        this.addItem = r2.data;
-      } catch (error) {
-        return;
-      }
-    },
-    async getItems() {
-      try {
-        let response = await axios.get("/api/items");
-        this.items = response.data;
-        return true;
-      } catch (error) {
-        return;
-      }
-    },
-    selectItem(item) {
-      this.findTitle = "";
-      this.findItem = item;
-    },
-    async deleteItem(item) {
-      try {
-        await axios.delete("/api/items/" + item._id);
-        this.findItem = null;
-        this.getItems();
-        return true;
-      } catch (error) {
-        return;
-      }
-    },
-    async editItem(item) {
-      try {
-        await axios.put("/api/items/" + item._id, {
-          title: this.findItem.title,
-          desc: this.findItem.desc,
-        });
-        this.findItem = null;
-        this.getItems();
-        return true;
-      } catch (error) {
-        return;
-      }
-    },
- },
-}
-
-</script>

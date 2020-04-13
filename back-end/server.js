@@ -25,9 +25,18 @@ const upload = multer({
 
 // Create a scheme for items in the museum: a title and a path to an image.
 const itemSchema = new mongoose.Schema({
-  title: String,
+  id:	String,
+  name: String,
+  type1: String,
+  type2: String,
+  total: String, 
+  hp:	String,
+  attack:	String,
+  defense:	String,
+  spatk:	String,
+  spdef:	String,
+  sp:	String,
   path: String,
-  desc: String,
 });
 
 // Create a model for items in the museum.
@@ -93,20 +102,20 @@ app.delete('/api/items/:id', async (req, res) => {
   }
 });
 
-app.put('/api/items/:id', async (req, res) => {
-  try {
-    item = await Item.findOne({
-      _id: req.params.id
-    });
-    item.title = req.body.title;
-    item.desc = req.body.desc;
-    await item.save();
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// app.put('/api/items/:id', async (req, res) => {
+//   try {
+//     item = await Item.findOne({
+//       _id: req.params.id
+//     });
+//     item.title = req.body.title;
+//     item.desc = req.body.desc;
+//     await item.save();
+//     res.sendStatus(200);
+//   } catch (error) {
+//     console.log(error);
+//     res.sendStatus(500);
+//   }
+// });
 
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));
