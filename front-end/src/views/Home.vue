@@ -5,6 +5,18 @@
       <h2>{{item.name}}</h2>
       <img :src="'/images/pokemon_images/' + item.path" />
       <div>{{item.desc}}</div>
+      <div class="stat-box">
+        <p><u>Pokemon Stats:</u></p>
+        <p>Type: {{item.type1}} & {{item.type2}}</p>
+        <div class="grid-container">
+          <div class="grid-item">HP: {{item.hp}}</div>
+          <div class="grid-item">Atk: {{item.attack}}</div>
+          <div class="grid-item">Def: {{item.defense}}</div>  
+          <div class="grid-item">Speed: {{item.sp}}</div>
+          <div class="grid-item">Sp.Atk: {{item.spatk}}</div>
+          <div class="grid-item">Sp.Def: {{item.spdef}}</div>  
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -40,6 +52,9 @@ export default {
 
 <style scoped>
 .image h2 {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  font-size: 20px;
   font-style: italic;
 }
 
@@ -58,6 +73,12 @@ export default {
   margin: 0 0 1.5em;
   display: inline-block;
   width: 100%;
+
+    border: 3px solid rgb(63, 85, 126);
+    border-radius: 5px;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .image img {
@@ -67,7 +88,7 @@ export default {
 /* Masonry on large screens */
 @media only screen and (min-width: 1024px) {
   .image-gallery {
-    column-count: 4;
+    column-count: 3;
   }
 }
 
@@ -76,6 +97,9 @@ export default {
   .image-gallery {
     column-count: 3;
   }
+  .grid-container {
+    column-count: 2;
+  }
 }
 
 /* Masonry on small screens */
@@ -83,5 +107,34 @@ export default {
   .image-gallery {
     column-count: 2;
   }
+  .grid-container {
+    column-count: 1;
+  }
+}
+
+
+.stat-box {
+  background-color: #4caf50;
+  padding-top: 2px;
+}
+
+.stat-box p {
+  margin: 2px;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-gap: 2px;
+  grid-template-columns: auto auto auto;
+  padding: 6px;
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 6px;
+  font-size: 10px;
+  text-align: center;
 }
 </style>

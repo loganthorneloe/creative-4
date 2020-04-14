@@ -2,14 +2,14 @@
 <div id="app">
   <div class="menu">
     <ul>
-      <li><a><img src="/images/pokemon_images/pikachu.png"></a></li>
-      <li><a><router-link to="/">Pokemon</router-link></a></li>
+      <li><a class="active-menu"><img src="/pokemon-logo.png"></a></li>
+      <li><a><router-link to="/">Pokemon Team</router-link></a></li>
       <li><a><router-link to="/admin">Team Builder</router-link></a></li>
     </ul>
   </div>
 
   <div class="title">
-    <h1>Gen 1 Pokemon Team Builder</h1>
+    <h1>Gen 1 Pokemon Team</h1>
   </div>
 
   <div class="content">
@@ -47,6 +47,13 @@ body {
 
 .title h1 {
   font-size: 30px;
+  border: 3px solid #4caf50;
+  border-radius: 5px;
+  width: 50%;
+  margin: auto;
+  text-align: center;
+  margin-bottom: 15px;
+
 }
 
 .content {
@@ -91,21 +98,25 @@ li a {
   display: block;
   color: white;
   text-align: center;
-  padding: 25px 16px !important;
+  padding: 25px 16px;
   text-decoration: none;
+  font-size: 25px;
 }
 
 li a:hover:not(.active-menu){
-  background-color: #111 !important;
+  background-color: #111 ;
 }
 
 .active-menu {
+  width: 90px;
+  height: 80px;
   background-color: #4CAF50 !important;
 }
 
 li a img{
-  height: 60px ;
+  width: 80px ;
   vertical-align: center;
+  background: none;
 }
 
 </style>
