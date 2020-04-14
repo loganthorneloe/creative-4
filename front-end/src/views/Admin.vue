@@ -88,7 +88,6 @@ export default {
         this.addItem = r2.data;
         this.getItems();
       } catch (error) {
-        console.log("error!");
         return;
       }
     },
