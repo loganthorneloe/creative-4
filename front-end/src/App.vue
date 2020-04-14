@@ -1,21 +1,22 @@
 <template>
 <div id="app">
-  <div class="header">
-    <router-link to="/">
-      <div class="logo">
-        <img src="/ordinary.png">
-      </div>
-    </router-link>
-    <div class="title">
-      <h1>Gen 1 Pokemon Team Builder</h1>
-    </div>
+  <div class="menu">
+    <ul>
+      <li><a><img src="/images/pokemon_images/pikachu.png"></a></li>
+      <li><a><router-link to="/">Pokemon</router-link></a></li>
+      <li><a><router-link to="/admin">Team Builder</router-link></a></li>
+    </ul>
   </div>
+
+  <div class="title">
+    <h1>Gen 1 Pokemon Team Builder</h1>
+  </div>
+
   <div class="content">
     <router-view />
   </div>
+
   <div class="footer">
-    <router-link to="/admin">Team-Builder</router-link>
-    <p></p>
     <a href="https://github.com/lathorne/creative-4">https://github.com/lathorne/creative-4</a>
     <div> Logan Thorneloe & Clint Frandsen</div>
   </div>
@@ -36,11 +37,8 @@ body {
 }
 
 /* Header */
-.header {
-  display: flex;
-  padding: 10px 100px 0px 100px;
-  background-color: #5BDEFF;
-  color: #1C454F;
+.menu {
+  text-align: center;
 }
 
 .title {
@@ -75,4 +73,39 @@ h1 {
 h2 {
   font-size: 14px;
 }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float:left;
+  background: none !important;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 25px 16px !important;
+  text-decoration: none;
+}
+
+li a:hover:not(.active-menu){
+  background-color: #111 !important;
+}
+
+.active-menu {
+  background-color: #4CAF50 !important;
+}
+
+li a img{
+  height: 60px ;
+  vertical-align: center;
+}
+
 </style>
